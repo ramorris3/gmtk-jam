@@ -14,11 +14,18 @@ class PlayScreen : ScreenAdapter() {
     init {
         // TODO: add systems to rooms so that rooms and their entities are self-contained
         JamGame.engine.addSystem(UpdateSystem())
+        JamGame.engine.addSystem(PhysicsSystem())
         JamGame.engine.addSystem(DrawSystem())
         JamGame.engine.addSystem(DestroySystem())
 
-        // TODO: Remove this fake staging object
-        SystemTest()
+        // TODO: load rooms dynamically
+        val room = Room()
+
+        for (x in 0..JamGame.width - 64 step 64) {
+            MovementStaging(room, x.toFloat(), 0f)
+        }
+
+        Player(room, 64f, 64f)
     }
 
     override fun render(delta: Float) {
