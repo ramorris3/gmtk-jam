@@ -10,6 +10,7 @@ enum class Type {
 }
 
 class Body(var x: Float, var y: Float, val width: Int, val height: Int) {
+    var solid = false
     var dx = 0f
     var dy = 0f
     var dxMax = 0f
@@ -17,6 +18,7 @@ class Body(var x: Float, var y: Float, val width: Int, val height: Int) {
     var ddx = 0f
     var ddy = 0f
     var fx = 0f
+    var fy = 0f
 
     fun overlaps(other: Body) : Boolean {
         if (equals(other)) return false

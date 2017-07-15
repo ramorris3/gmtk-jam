@@ -60,15 +60,18 @@ enum class PlayerState {
 
 class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54), IUpdatable, IDrawable {
     val standAnim: Animation<TextureRegion>
-    val groundAccel = 1200f
+    val xAccel = 1200f
     val groundFx = 1300f
+    val airFx = 900f
+    val jumpSpeed = 500f
     var currentState = PlayerState.GROUND
 
     init {
         // physics constants
-        body.dxMax = 110f
+        body.solid = true
+        body.dxMax = 210f
         body.dyMax = 180f
-        body.ddy = -800f
+        body.ddy = -100f
 
         // animations
         val atlas = JamGame.assets["img/player.atlas", TextureAtlas::class.java]
@@ -80,6 +83,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
 
         // add to systems and core engine
         add(UpdateComponent(this))
+        add(PhysicsComponent(room, body))
         add(DrawComponent(this, Layers.ENTITIES))
         JamGame.engine.addEntity(this)
     }
@@ -91,93 +95,45 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
                 Gdx.app.debug("Player", "State was not recognized.")
             }
         }
+    }
 
+    private fun actionPressed() : Boolean {
+        return (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
+                || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT))
+    }
 
-        // update position based on velocity, accel, etc.
-        move(delta)
+    private fun actionJustPressed() : Boolean {
+        return (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)
+                || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT))
     }
 
     private fun groundState() {
         body.fx = groundFx
+
+        // run
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             faceLeft()
-            body.ddx = -groundAccel
+            body.ddx = -xAccel
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             faceRight()
-            body.ddx = groundAccel
+            body.ddx = xAccel
         } else {
             body.ddx = 0f
+            setAnim(standAnim)
         }
 
+        // jump
+        if (actionJustPressed()) {
+            body.dy = jumpSpeed
+        }
+
+    }
+
+    private fun jumpState() {
+        body.fx = airFx
     }
 
     override fun draw(delta: Float) {
         drawCurrentFrame(delta)
-    }
-
-    private fun move(delta: Float) {
-        moveX(delta)
-        moveY(delta)
-    }
-
-    private fun moveX(delta: Float) {
-        // update velocity
-        body.dx += body.ddx * delta
-        if (Math.abs(body.ddx) == 0f) {
-            body.dx = approach(body.dx, 0f, body.fx * delta)
-        }
-        body.dx = clamp(body.dx, -body.dxMax, body.dxMax)
-
-        // get amount to move, and direction
-        var toMove = body.dx
-        var sign = Math.signum(toMove)
-
-        // step one px at a time, checking for solid collisions
-        while (Math.abs(toMove) > 0) {
-            if (Math.abs(toMove) < 1) {
-                sign = toMove
-            }
-
-            // tentatively move
-            body.x += sign
-            toMove -= sign
-
-            // check for collisions
-            if (room.overlaps(body, Type.SOLID)) {
-                // collision!  move back
-                body.x -= sign
-                body.dx = 0f
-                break
-            }
-        }
-    }
-
-    private fun moveY(delta: Float) {
-        // update velocity
-        body.dy += body.ddy * delta
-        body.dy = clamp(body.dy, -body.dyMax, body.dyMax)
-
-        // get amount to move, and direction
-        var toMove = body.dy
-        var sign = Math.signum(toMove)
-
-        // step one px at a time, checking for solid collisions
-        while (Math.abs(toMove) > 0) {
-            if (Math.abs(toMove) < 1) {
-                sign = toMove
-            }
-
-            // tentatively move
-            body.y += sign
-            toMove -= sign
-
-            // check for collisions
-            if (room.overlaps(body, Type.SOLID)) {
-                // collision!  move back
-                body.y -= sign
-                body.dy = 0f
-                break
-            }
-        }
     }
 }

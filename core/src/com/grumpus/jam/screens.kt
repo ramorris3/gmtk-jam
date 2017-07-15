@@ -14,6 +14,7 @@ class PlayScreen : ScreenAdapter() {
     init {
         // TODO: add systems to rooms so that rooms and their entities are self-contained
         JamGame.engine.addSystem(UpdateSystem())
+        JamGame.engine.addSystem(PhysicsSystem())
         JamGame.engine.addSystem(DrawSystem())
         JamGame.engine.addSystem(DestroySystem())
 
