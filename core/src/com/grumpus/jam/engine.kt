@@ -5,7 +5,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.systems.SortedIteratingSystem
 
 enum class Layers {
-    FLOOR, OBJECTS, EFFECTS, UI
+    ENTITIES, SOLIDS, EFFECTS, UI
 }
 
 interface IUpdatable {
@@ -18,8 +18,7 @@ interface IDrawable {
 
 class UpdateComponent(val updatable: IUpdatable) : Component
 class DrawComponent(val drawable: IDrawable,
-                    var depth: Float,
-                    var layer: Layers = Layers.OBJECTS) : Component
+                    var layer: Layers = Layers.ENTITIES) : Component
 class DestroyComponent : Component
 
 class UpdateSystem : IteratingSystem(Family.all(UpdateComponent::class.java).get()) {
@@ -51,13 +50,7 @@ class DrawSystem: SortedIteratingSystem(Family.all(DrawComponent::class.java).ge
             if (o1 != null && o2 != null) {
                 val e1 = dcm.get(o1)
                 val e2 = dcm.get(o2)
-
-                // sort by layer first, then y position
-                val comp = e1.layer.compareTo(e2.layer)
-                if (comp != 0) {
-                    return comp
-                }
-                return e1.depth.compareTo(e2.depth)
+                return e1.layer.compareTo(e2.layer)
             }
             return 0
         }
@@ -68,7 +61,6 @@ class DestroySystem: IteratingSystem(Family.all(DestroyComponent::class.java).ge
     override fun processEntity(entity: Entity?, deltaTime: Float) {
         if (entity != null) {
             engine.removeEntity(entity)
-            // TODO: Also remove from all collision groups
             println("Removed from engine")
         }
     }

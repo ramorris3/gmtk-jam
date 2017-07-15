@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.FitViewport
 
 class PlayScreen : ScreenAdapter() {
@@ -17,8 +18,10 @@ class PlayScreen : ScreenAdapter() {
         JamGame.engine.addSystem(DrawSystem())
         JamGame.engine.addSystem(DestroySystem())
 
-        // TODO: Remove this fake staging object
-        SystemTest()
+        // TODO: load rooms dynamically
+        val room = Room()
+
+        Solid(room, Type.SOLID, "platform-block", 10f, 32f, 32f, 64, 64)
     }
 
     override fun render(delta: Float) {

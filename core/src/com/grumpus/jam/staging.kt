@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
  * Use this to create classes for staging specific components and features
  */
 
-class SystemTest : IUpdatable, IDrawable, Entity() {
+class Staging : IUpdatable, IDrawable, Entity() {
     private val atlas = JamGame.assets["img/enemies.atlas", TextureAtlas::class.java]
     private val idleAnim = Animation<TextureRegion>(
             0.1f,
@@ -27,7 +27,7 @@ class SystemTest : IUpdatable, IDrawable, Entity() {
     private var y = JamGame.height / 2 - 16f
     private var spd = 200f
 
-    private var drawComp = DrawComponent(this, y)
+    private var drawComp = DrawComponent(this)
 
     init {
         add(UpdateComponent(this))
@@ -36,8 +36,6 @@ class SystemTest : IUpdatable, IDrawable, Entity() {
     }
 
     override fun update(delta: Float) {
-        drawComp.depth = y
-
         if (dead) {
             if (dieAnim.isAnimationFinished(stateTime)) {
                 add(DestroyComponent())
