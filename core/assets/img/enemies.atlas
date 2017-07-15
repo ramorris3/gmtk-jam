@@ -137,3 +137,10 @@ skull-idle
   orig: 64, 64
   offset: 0, 0
   index: 3
+skull-idle
+  rotate: false
+  xy: 200, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4

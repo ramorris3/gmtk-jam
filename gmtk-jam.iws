@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6a55f47-0e97-4856-b7b2-f1df9ed4b93a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/engine.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/engine.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/screens.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/screens.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/staging.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/staging.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/enemies.png" afterPath="$PROJECT_DIR$/core/assets/img/enemies.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/raw/skull-idle.ase" afterPath="$PROJECT_DIR$/core/assets/img/raw/skull-idle.ase" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/raw/skull-idle_1.png" afterPath="$PROJECT_DIR$/core/assets/img/raw/skull-idle_1.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/raw/skull-idle_2.png" afterPath="$PROJECT_DIR$/core/assets/img/raw/skull-idle_2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/raw/skull-idle_3.png" afterPath="$PROJECT_DIR$/core/assets/img/raw/skull-idle_3.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/enemies.atlas" afterPath="$PROJECT_DIR$/core/assets/img/enemies.atlas" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmtk-jam.iws" afterPath="$PROJECT_DIR$/gmtk-jam.iws" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -102,7 +106,7 @@
       <file leaf-file-name="staging.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/grumpus/jam/staging.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
+            <state relative-caret-position="414">
               <caret line="18" column="35" lean-forward="false" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
               <folding>
                 <element signature="e#25#269#0" expanded="true" />
@@ -762,7 +766,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10189000" />
+    <option name="totallyTimeSpent" value="11060000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-12" y="-12" width="2584" height="1394" extended-state="6" />
@@ -925,7 +929,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/grumpus/jam/staging.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
+        <state relative-caret-position="414">
           <caret line="18" column="35" lean-forward="false" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
           <folding>
             <element signature="e#25#269#0" expanded="true" />
