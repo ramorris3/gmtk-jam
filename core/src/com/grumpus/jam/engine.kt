@@ -64,6 +64,12 @@ class DrawSystem: SortedIteratingSystem(Family.all(DrawComponent::class.java).ge
     }
 }
 
-//class DestroySystem: IteratingSystem(Family.all(DestroyComponent::class.java).get()) {
-//
-//}
+class DestroySystem: IteratingSystem(Family.all(DestroyComponent::class.java).get()) {
+    override fun processEntity(entity: Entity?, deltaTime: Float) {
+        if (entity != null) {
+            engine.removeEntity(entity)
+            // TODO: Also remove from all collision groups
+            println("Removed from engine")
+        }
+    }
+}

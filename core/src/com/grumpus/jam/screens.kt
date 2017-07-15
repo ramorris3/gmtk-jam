@@ -15,7 +15,10 @@ class PlayScreen : ScreenAdapter() {
         // TODO: add systems to rooms so that rooms and their entities are self-contained
         JamGame.engine.addSystem(UpdateSystem())
         JamGame.engine.addSystem(DrawSystem())
-//        JamGame.engine.addSystem(DestroySystem())
+        JamGame.engine.addSystem(DestroySystem())
+
+        // TODO: Remove this fake staging object
+        SystemTest()
     }
 
     override fun render(delta: Float) {
@@ -30,7 +33,7 @@ class PlayScreen : ScreenAdapter() {
         JamGame.batch.projectionMatrix = camera.combined
 
         JamGame.batch.begin()
-
+        JamGame.engine.update(delta)
         JamGame.batch.end()
     }
 
