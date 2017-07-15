@@ -23,6 +23,8 @@ class PlayScreen : ScreenAdapter() {
         for (x in 0..JamGame.width - 64 step 64) {
             MovementStaging(room, x.toFloat(), 0f)
         }
+
+        Player(room, 64f, 64f)
     }
 
     override fun render(delta: Float) {

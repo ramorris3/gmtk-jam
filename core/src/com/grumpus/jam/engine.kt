@@ -5,7 +5,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.systems.SortedIteratingSystem
 
 enum class Layers {
-    ENTITIES, SOLIDS, EFFECTS, UI
+    SOLIDS, EFFECTS, ENTITIES, UI
 }
 
 interface IUpdatable {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 
 class Assets : AssetManager() {
     fun loadAll() {
+        load("img/player.atlas", TextureAtlas::class.java)
         load("img/enemies.atlas", TextureAtlas::class.java)
         load("img/platforms.atlas", TextureAtlas::class.java)
         load("img/effects.atlas", TextureAtlas::class.java)

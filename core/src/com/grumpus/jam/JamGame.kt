@@ -15,6 +15,7 @@ class JamGame : Game() {
 
         val width = 1024
         val height = 576
+        val ppm = 32 // pixels per meter, for physics
 
         val bgColor = Color(11f/255, 0f/255, 28f/255, 1f)
     }

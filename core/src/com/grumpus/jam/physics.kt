@@ -78,6 +78,10 @@ class Room {
         return groups[type]?.getOverlapping(body)
     }
 
+    fun overlaps(body: Body, type: Type) : Boolean {
+        return getOverlapping(body, type) != null
+    }
+
     fun reset() {
         // clear/init groups
         for (type in Type.values()) {
