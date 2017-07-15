@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.FitViewport
 
 class PlayScreen : ScreenAdapter() {
@@ -21,7 +20,9 @@ class PlayScreen : ScreenAdapter() {
         // TODO: load rooms dynamically
         val room = Room()
 
-        Solid(room, Type.SOLID, "platform-block", 10f, 32f, 32f, 64, 64)
+        for (x in 0..JamGame.width - 64 step 64) {
+            MovementStaging(room, x.toFloat(), 0f)
+        }
     }
 
     override fun render(delta: Float) {

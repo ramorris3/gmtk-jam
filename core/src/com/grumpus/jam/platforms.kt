@@ -58,6 +58,7 @@ class Solid(val room: Room, val type: Type, val animKey: String,
         add(DestroyComponent())
         room.removeFromGroup(body, type)
 
-        // TODO: create an animation effect and a sound?
+        // TODO: add a sound effect here
+        Effect(body.centerX(), body.centerY(), "platform-die")
     }
 }
