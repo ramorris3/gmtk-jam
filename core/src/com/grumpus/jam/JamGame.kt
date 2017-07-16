@@ -12,6 +12,7 @@ class JamGame : Game() {
         lateinit var batch: SpriteBatch
         lateinit var assets: Assets
         lateinit var engine: Engine
+        lateinit var input: Input
 
         val width = 1024
         val height = 576
@@ -23,6 +24,7 @@ class JamGame : Game() {
     override fun create() {
         batch = SpriteBatch()
         engine = Engine()
+        input = Input()
         assets = Assets()
 
         // TODO: go to loading screen for loading assets

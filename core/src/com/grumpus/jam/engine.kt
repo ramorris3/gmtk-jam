@@ -33,7 +33,7 @@ class UpdateSystem : IteratingSystem(Family.all(UpdateComponent::class.java).get
     }
 }
 
-class PhysicsSystem : IteratingSystem(Family.all(UpdateComponent::class.java).get()) {
+class PhysicsSystem : IteratingSystem(Family.all(PhysicsComponent::class.java).get()) {
     private val pcm = ComponentMapper.getFor(PhysicsComponent::class.java)
 
     override fun processEntity(entity: Entity?, deltaTime: Float) {

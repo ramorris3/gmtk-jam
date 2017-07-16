@@ -1,8 +1,6 @@
 package com.grumpus.jam
 
 import com.badlogic.ashley.core.Entity
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
@@ -56,31 +54,60 @@ abstract class AnimatedEntity(x: Float, y: Float, width: Int, height: Int) : Ent
 //class Enemy(x: Float)
 
 enum class PlayerState {
-    GROUND, JUMP, AIM, LEDGE
+    GROUND, AIR, AIM, LEDGE
 }
 
 class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54), IUpdatable, IDrawable {
     val standAnim: Animation<TextureRegion>
-    val accelGround = 1800f
-    val accelAir = 1300f
-    val groundFx = 1300f
-    val airFx = 900f
-    val jumpSpeed = 365f
-    val gravity = -600f
+    val aimSideAnim: Animation<TextureRegion>
+    val aimUpAnim: Animation<TextureRegion>
+    val aimDownAnim: Animation<TextureRegion>
+    val jumpAnim: Animation<TextureRegion>
+    val runAnim: Animation<TextureRegion>
+    val slideAnim: Animation<TextureRegion>
+    val ledgeAnim: Animation<TextureRegion>
+
+    val const = 1.5f
+    val dxMax = 290f * const
+    val dyMax = 500f * const
+    val accelGround = 2200f * const
+    val accelAir = 1300f * const
+    val groundFx = 1800f * const
+    val airFx = 900f * const
+    val jumpSpeed = 365f * const
+    val gravity = -625f * const
+
+    val groundTime = 0.225f
+    var groundClock = groundTime
+    val shortJumpTime = 0.1f
+    var shortJumpClock = shortJumpTime
+    val startAimTime = 0.225f
+    var startAimClock = startAimTime
+    val aimTime = 1.8f
+    var aimClock = aimTime
+
     var currentState = PlayerState.GROUND
+
     val sensor = Body(x, y, 16, 16)
     val sensorText = Texture("img/sensor.png")
 
     init {
         // physics constants
         body.solid = true
-        body.dxMax = 290f
-        body.dyMax = 500f
+        body.dxMax = dxMax
+        body.dyMax = dyMax
         body.ddy = gravity
 
         // animations
         val atlas = JamGame.assets["img/player.atlas", TextureAtlas::class.java]
         standAnim = Animation(0f, atlas.findRegions("player-stand"), Animation.PlayMode.LOOP)
+        aimSideAnim = Animation(0f, atlas.findRegions("player-aim-side"))
+        aimUpAnim = Animation(0f, atlas.findRegions("player-aim-up"))
+        aimDownAnim = Animation(0f, atlas.findRegions("player-aim-down"))
+        jumpAnim = Animation(0.04f, atlas.findRegions("player-jump"), Animation.PlayMode.LOOP)
+        runAnim = Animation(0.05f, atlas.findRegions("player-run"), Animation.PlayMode.LOOP)
+        slideAnim = Animation(0.04f, atlas.findRegions("player-slide"))
+        ledgeAnim = Animation(0f, atlas.findRegions("player-ledge"))
         setAnim(standAnim)
 
         // add to room
@@ -93,32 +120,15 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         JamGame.engine.addEntity(this)
     }
 
-    override fun update(delta: Float) {
-        when (currentState) {
-            PlayerState.GROUND -> groundState()
-            PlayerState.JUMP -> jumpState()
-            PlayerState.LEDGE -> ledgeState()
-            else -> {
-                println("State was not recognized.")
-            }
-        }
-    }
-
-    private fun actionPressed() : Boolean {
-        return (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
-                || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT))
-    }
-
-    private fun actionJustPressed() : Boolean {
-        return (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)
-                || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT))
-    }
-
     private fun onGround() : Boolean {
         body.y -= 1
         val onGround = room.overlaps(body, Type.SOLID)
         body.y += 1
         return onGround
+    }
+
+    private fun wasOnGround() : Boolean {
+        return groundClock > 0
     }
 
     private fun onRightWall() : Boolean {
@@ -139,7 +149,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         // check if against wall
         if (!onRightWall()
             || body.dy >= 0f
-            || !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            || !JamGame.input.rightPressed()) {
             return false
         }
 
@@ -164,7 +174,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
     private fun leftLedgeCheck() : Boolean {
         if (!onLeftWall()
             || body.dy >= 0f
-            || !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            || !JamGame.input.leftPressed()) {
             return false
         }
 
@@ -189,35 +199,64 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         body.fx = groundFx
 
         // run
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            faceLeft()
+        if (JamGame.input.leftPressed()) {
+            if (body.dx > 0) {
+                faceRight()
+                setAnim(slideAnim)
+            } else {
+                faceLeft()
+                setAnim(runAnim)
+            }
             body.ddx = -accelGround
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            faceRight()
+        } else if (JamGame.input.rightPressed()) {
+            if (body.dx < 0) {
+                faceLeft()
+                setAnim(slideAnim)
+            } else {
+                faceRight()
+                setAnim(runAnim)
+            }
             body.ddx = accelGround
         } else {
             body.ddx = 0f
-            setAnim(standAnim)
+            if (Math.abs(body.dx) > 0) {
+                setAnim(slideAnim)
+            } else {
+                setAnim(standAnim)
+            }
         }
 
         // jump
-        if (actionJustPressed()) {
+        if (JamGame.input.actionJustPressed()) {
             body.dy = jumpSpeed
-            currentState = PlayerState.JUMP
-        } else if (!onGround()) {
-            currentState = PlayerState.JUMP
+            shortJumpClock = shortJumpTime
+            startAimClock = startAimTime
+            currentState = PlayerState.AIR
+        } else if (!wasOnGround()) {
+            currentState = PlayerState.AIR
+            shortJumpClock = 0f
+            startAimClock = startAimTime
         }
 
     }
 
     private fun jumpState() {
         body.fx = airFx
+        setAnim(jumpAnim)
+
+        // TODO: recharge aim time??
+
+        // allow short hopping
+        if (shortJumpClock > 0 && JamGame.input.actionReleased()) {
+            shortJumpClock = 0f
+            body.dy /= 2
+        }
 
         // move left and right in air
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (JamGame.input.leftPressed()) {
             faceLeft()
             body.ddx = -accelAir
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        } else if (JamGame.input.rightPressed()) {
             faceRight()
             body.ddx = accelAir
         } else {
@@ -228,7 +267,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         val rLedge = rightLedgeCheck()
         val lLedge = leftLedgeCheck()
 
-        // landed on ground
+        // landed on ground or ledge, or started aiming
         if (onGround) {
             body.dy = 0f
             currentState = PlayerState.GROUND
@@ -237,33 +276,92 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
             body.dy = 0f
             currentState = PlayerState.LEDGE
             facing = if (rLedge) Facing.RIGHT else Facing.LEFT
+        } else if (startAimClock <= 0 && JamGame.input.actionJustPressed()) {
+            body.dy = 0f
+//            body.dx = 300f * -facing.dir
+            body.dx = 0f
+            aimClock = aimTime
+            currentState = PlayerState.AIM
         }
     }
 
     private fun ledgeState() {
-        // just hanging
-
-        // TODO: set player ledge animation without loop
+        // just hanging, no special logic other than anim
+        setAnim(ledgeAnim)
 
         // jumping off
-        if (actionJustPressed()) {
-            currentState = PlayerState.JUMP
+        if (JamGame.input.actionJustPressed()) {
+            currentState = PlayerState.AIR
+            startAimClock = startAimTime
             body.ddy = gravity
 
             // letting self down
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if (JamGame.input.downPressed()) {
                 body.y -= 1
             } else {
                 body.y += 1
                 body.dy = jumpSpeed
+                shortJumpClock = shortJumpTime
             }
         }
+    }
 
+    private fun aimState(delta: Float) {
+        // aim left, right, up, or down
+        if (JamGame.input.upPressed()) {
+            setAnim(aimUpAnim)
+        } else if (JamGame.input.downPressed()) {
+            setAnim(aimDownAnim)
+        } else if (JamGame.input.leftPressed()) {
+            setAnim(aimSideAnim)
+            faceLeft()
+        } else if (JamGame.input.rightPressed()) {
+            setAnim(aimSideAnim)
+            faceRight()
+        } else {
+            setAnim(aimSideAnim)
+        }
 
+        // slow falling, stop moving horizontally
+        body.ddx = 0f
+        body.ddy = -10f
+
+        // decrement aim timer
+        aimClock -= delta
+
+        // if out of charge or on ground, go back to air state
+        if (onGround()) {
+            body.ddy = gravity
+            aimClock = aimTime
+            currentState = PlayerState.GROUND
+        } else if (aimClock <= 0 || JamGame.input.actionReleased()) {
+            currentState = PlayerState.AIR
+            body.ddy = gravity
+        }
+    }
+
+    override fun update(delta: Float) {
+        // update timers
+        if (onGround()) groundClock = groundTime
+        if (groundClock > 0) groundClock -= delta
+        if (shortJumpClock > 0) shortJumpClock -= delta
+        if (startAimClock > 0) startAimClock -= delta
+
+        // state logic
+        when (currentState) {
+            PlayerState.GROUND -> groundState()
+            PlayerState.AIR -> jumpState()
+            PlayerState.LEDGE -> ledgeState()
+            PlayerState.AIM -> aimState(delta)
+            else -> {
+                println("State was not recognized.")
+            }
+        }
     }
 
     override fun draw(delta: Float) {
         drawCurrentFrame(delta)
-        JamGame.batch.draw(sensorText, sensor.x, sensor.y)
+        // DEBUG
+//        JamGame.batch.draw(sensorText, sensor.x, sensor.y)
     }
 }

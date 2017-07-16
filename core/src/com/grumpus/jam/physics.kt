@@ -37,6 +37,11 @@ class Body(var x: Float, var y: Float, val width: Int, val height: Int) {
     fun centerY() : Float {
         return height / 2 + y
     }
+
+    fun outOfBounds() : Boolean {
+        return (x < 0 || x > JamGame.width
+            || y < 0 || y > JamGame.width)
+    }
 }
 
 class Group: ArrayList<Body>() {
@@ -92,8 +97,6 @@ class Room {
             groups[type] = Group()
         }
         // clear out all entities
-        JamGame.engine.removeAllEntities()
+//        JamGame.engine.removeAllEntities()
     }
-
-    // TODO: Add loadMap method
 }

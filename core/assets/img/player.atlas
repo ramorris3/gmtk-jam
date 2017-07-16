@@ -1,12 +1,145 @@
 
 player.png
-size: 128,128
+size: 256,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+player-aim-down
+  rotate: false
+  xy: 76, 398
+  size: 72, 96
+  orig: 72, 96
+  offset: 0, 0
+  index: 0
+player-aim-side
+  rotate: false
+  xy: 2, 398
+  size: 72, 96
+  orig: 72, 96
+  offset: 0, 0
+  index: 0
+player-aim-up
+  rotate: false
+  xy: 2, 300
+  size: 72, 96
+  orig: 72, 96
+  offset: 0, 0
+  index: 0
+player-jump
+  rotate: false
+  xy: 68, 200
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player-jump
+  rotate: false
+  xy: 68, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+player-jump
+  rotate: false
+  xy: 68, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+player-jump
+  rotate: false
+  xy: 150, 364
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+player-jump
+  rotate: false
+  xy: 142, 298
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+player-jump
+  rotate: false
+  xy: 68, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+player-ledge
+  rotate: false
+  xy: 134, 100
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player-run
+  rotate: false
+  xy: 2, 234
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 7
+player-run
+  rotate: false
+  xy: 150, 430
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+player-run
+  rotate: false
+  xy: 2, 168
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
+player-run
+  rotate: false
+  xy: 2, 102
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player-run
+  rotate: false
+  xy: 2, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+player-run
+  rotate: false
+  xy: 76, 266
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+player-run
+  rotate: false
+  xy: 142, 232
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+player-run
+  rotate: false
+  xy: 134, 34
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+player-slide
+  rotate: false
+  xy: 76, 332
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
 player-stand
   rotate: false
-  xy: 2, 2
+  xy: 134, 166
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
