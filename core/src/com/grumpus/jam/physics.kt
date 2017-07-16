@@ -10,6 +10,8 @@ enum class Type {
 }
 
 class Body(var x: Float, var y: Float, val width: Int, val height: Int) {
+    var prevX = x
+    var prevY = y
     var solid = false
     var dx = 0f
     var dy = 0f

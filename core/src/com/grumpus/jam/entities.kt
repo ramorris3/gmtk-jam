@@ -3,6 +3,7 @@ package com.grumpus.jam
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -55,23 +56,27 @@ abstract class AnimatedEntity(x: Float, y: Float, width: Int, height: Int) : Ent
 //class Enemy(x: Float)
 
 enum class PlayerState {
-    GROUND, JUMP, AIM
+    GROUND, JUMP, AIM, LEDGE
 }
 
 class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54), IUpdatable, IDrawable {
     val standAnim: Animation<TextureRegion>
-    val xAccel = 1200f
+    val accelGround = 1800f
+    val accelAir = 1300f
     val groundFx = 1300f
     val airFx = 900f
-    val jumpSpeed = 500f
+    val jumpSpeed = 365f
+    val gravity = -600f
     var currentState = PlayerState.GROUND
+    val sensor = Body(x, y, 16, 16)
+    val sensorText = Texture("img/sensor.png")
 
     init {
         // physics constants
         body.solid = true
-        body.dxMax = 210f
-        body.dyMax = 180f
-        body.ddy = -100f
+        body.dxMax = 290f
+        body.dyMax = 500f
+        body.ddy = gravity
 
         // animations
         val atlas = JamGame.assets["img/player.atlas", TextureAtlas::class.java]
@@ -91,8 +96,10 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
     override fun update(delta: Float) {
         when (currentState) {
             PlayerState.GROUND -> groundState()
+            PlayerState.JUMP -> jumpState()
+            PlayerState.LEDGE -> ledgeState()
             else -> {
-                Gdx.app.debug("Player", "State was not recognized.")
+                println("State was not recognized.")
             }
         }
     }
@@ -107,16 +114,87 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
                 || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT))
     }
 
+    private fun onGround() : Boolean {
+        body.y -= 1
+        val onGround = room.overlaps(body, Type.SOLID)
+        body.y += 1
+        return onGround
+    }
+
+    private fun onRightWall() : Boolean {
+        body.x += 1
+        val onWall = room.overlaps(body, Type.SOLID)
+        body.x -= 1
+        return onWall
+    }
+
+    private fun onLeftWall() : Boolean {
+        body.x -= 1
+        val onWall = room.overlaps(body, Type.SOLID)
+        body.x += 1
+        return onWall
+    }
+
+    private fun rightLedgeCheck() : Boolean {
+        // check if against wall
+        if (!onRightWall()
+            || body.dy >= 0f
+            || !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            return false
+        }
+
+        sensor.x = body.x + body.width
+        sensor.y = body.prevY + body.height
+        val wasFree = !room.overlaps(sensor, Type.SOLID)
+        sensor.y = body.y + body.height
+        val isNotFree = room.overlaps(sensor, Type.SOLID)
+
+        if (wasFree && isNotFree) {
+            // set body height to ledge edge and return true
+            while (room.overlaps(sensor, Type.SOLID)) {
+                sensor.y += 1
+                body.y += 1
+            }
+            return true
+        }
+
+        return false
+    }
+
+    private fun leftLedgeCheck() : Boolean {
+        if (!onLeftWall()
+            || body.dy >= 0f
+            || !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            return false
+        }
+
+        sensor.x = body.x - sensor.width
+        sensor.y = body.prevY + body.height
+        val wasFree = !room.overlaps(sensor, Type.SOLID)
+        sensor.y = body.y + body.height
+        val isNotFree = room.overlaps(sensor, Type.SOLID)
+
+        if (wasFree && isNotFree) {
+            while (room.overlaps(sensor, Type.SOLID)) {
+                sensor.y += 1
+                body.y += 1
+            }
+            return true
+        }
+
+        return false
+    }
+
     private fun groundState() {
         body.fx = groundFx
 
         // run
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             faceLeft()
-            body.ddx = -xAccel
+            body.ddx = -accelGround
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             faceRight()
-            body.ddx = xAccel
+            body.ddx = accelGround
         } else {
             body.ddx = 0f
             setAnim(standAnim)
@@ -125,15 +203,67 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         // jump
         if (actionJustPressed()) {
             body.dy = jumpSpeed
+            currentState = PlayerState.JUMP
+        } else if (!onGround()) {
+            currentState = PlayerState.JUMP
         }
 
     }
 
     private fun jumpState() {
         body.fx = airFx
+
+        // move left and right in air
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            faceLeft()
+            body.ddx = -accelAir
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            faceRight()
+            body.ddx = accelAir
+        } else {
+            body.ddx = 0f
+        }
+
+        val onGround = onGround()
+        val rLedge = rightLedgeCheck()
+        val lLedge = leftLedgeCheck()
+
+        // landed on ground
+        if (onGround) {
+            body.dy = 0f
+            currentState = PlayerState.GROUND
+        } else if (rLedge || lLedge) {
+            body.ddy = 0f
+            body.dy = 0f
+            currentState = PlayerState.LEDGE
+            facing = if (rLedge) Facing.RIGHT else Facing.LEFT
+        }
+    }
+
+    private fun ledgeState() {
+        // just hanging
+
+        // TODO: set player ledge animation without loop
+
+        // jumping off
+        if (actionJustPressed()) {
+            currentState = PlayerState.JUMP
+            body.ddy = gravity
+
+            // letting self down
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                body.y -= 1
+            } else {
+                body.y += 1
+                body.dy = jumpSpeed
+            }
+        }
+
+
     }
 
     override fun draw(delta: Float) {
         drawCurrentFrame(delta)
+        JamGame.batch.draw(sensorText, sensor.x, sensor.y)
     }
 }
