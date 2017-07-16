@@ -33,7 +33,7 @@ class UpdateSystem : IteratingSystem(Family.all(UpdateComponent::class.java).get
     }
 }
 
-class PhysicsSystem : IteratingSystem(Family.all(UpdateComponent::class.java).get()) {
+class PhysicsSystem : IteratingSystem(Family.all(PhysicsComponent::class.java).get()) {
     private val pcm = ComponentMapper.getFor(PhysicsComponent::class.java)
 
     override fun processEntity(entity: Entity?, deltaTime: Float) {
@@ -41,8 +41,12 @@ class PhysicsSystem : IteratingSystem(Family.all(UpdateComponent::class.java).ge
             val pc = pcm[entity]
             updateVelocity(pc.body, deltaTime)
 
+            // store prev position
+            pc.body.prevX = pc.body.x
+            pc.body.prevY = pc.body.y
+
+            // move, either up to solid or just directly
             if (pc.body.solid) {
-                // move to solid
                 moveToSolid(pc.body, pc.room, deltaTime)
             } else {
                 move(pc.body, deltaTime)

@@ -12,18 +12,19 @@ class PlayScreen : ScreenAdapter() {
             JamGame.width.toFloat(), JamGame.height.toFloat(), camera)
 
     init {
-        // TODO: add systems to rooms so that rooms and their entities are self-contained
         JamGame.engine.addSystem(UpdateSystem())
         JamGame.engine.addSystem(PhysicsSystem())
         JamGame.engine.addSystem(DrawSystem())
         JamGame.engine.addSystem(DestroySystem())
 
-        // TODO: load rooms dynamically
         val room = Room()
 
+        // TODO: remove this, enemy controller instead
         for (x in 0..JamGame.width - 64 step 64) {
             MovementStaging(room, x.toFloat(), 0f)
         }
+        MovementStaging(room, 128f, 128f)
+
 
         Player(room, 64f, 64f)
     }
