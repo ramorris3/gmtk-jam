@@ -217,27 +217,27 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
     val dxMax = 290f * const
     val dyMax = 500f * const
     var prevDx = body.dx
-    val accelGround = 2200f * const
-    val accelAir = 1300f * const
+    val accelGround = 3000f * const
+    val accelAir = 1500f * const
     val groundFx = 1800f * const
     val airFx = 900f * const
     val jumpSpeed = 390f * const
     val gravity = -625f * const
 
-    val groundTime = 0.225f
+    val groundTime = 0.1f
     var groundClock = groundTime
     val shortJumpTime = 0.1f
     var shortJumpClock = shortJumpTime
-    val startAimTime = 0.225f
+    val startAimTime = 0.015f
     var startAimClock = startAimTime
-    val aimTime = 1.8f
+    val aimTime = 1f
     var aimClock = aimTime
-    val maxAmmo = 3
+    val maxAmmo = 5
     var ammo = maxAmmo
 
     var currentState = PlayerState.AIR
 
-    val sensor = Body(x, y, 16, 16)
+    val sensor = Body(x, y, 4, 4)
     val sensorText = Texture("img/sensor.png")
 
     init {
@@ -297,8 +297,8 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
     private fun rightLedgeCheck() : Boolean {
         // check if against wall
         if (!onRightWall()
-            || body.dy >= 0f
-            || !JamGame.input.rightPressed()) {
+            || body.dy >= 0f) {
+//            || !JamGame.input.rightPressed()) {
             return false
         }
 
@@ -320,10 +320,21 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         return false
     }
 
+    private fun stillOnRightLedge() : Boolean {
+        if (!onRightWall()) return false
+
+        sensor.x = body.x + body.width
+        sensor.y = body.y + body.height
+        val isClearAbove = !room.overlaps(sensor, Type.SOLID)
+        sensor.y -= sensor.height
+        val isBlockedBelow = room.overlaps(sensor, Type.SOLID)
+        return isClearAbove && isBlockedBelow
+    }
+
     private fun leftLedgeCheck() : Boolean {
         if (!onLeftWall()
-            || body.dy >= 0f
-            || !JamGame.input.leftPressed()) {
+            || body.dy >= 0f) {
+//            || !JamGame.input.leftPressed()) {
             return false
         }
 
@@ -342,6 +353,17 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         }
 
         return false
+    }
+
+    private fun stillOnLeftLedge() : Boolean {
+        if (!onLeftWall()) return false
+
+        sensor.x = body.x - sensor.width
+        sensor.y = body.y + body.height
+        val isClearAbove = !room.overlaps(sensor, Type.SOLID)
+        sensor.y -= sensor.height
+        val isBlockedBelow = room.overlaps(sensor, Type.SOLID)
+        return isClearAbove && isBlockedBelow
     }
 
     private fun groundState() {
@@ -399,8 +421,11 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         // just hanging, no special logic other than anim
         setAnim(ledgeAnim)
 
-        // jumping off
-        if (JamGame.input.actionJustPressed()) {
+        // if ledge disappears or if player jumps, switch states
+        if (!stillOnRightLedge() && !stillOnLeftLedge()) {
+            currentState = PlayerState.AIR
+            body.ddy = gravity
+        } else if (JamGame.input.actionJustPressed()) {
             currentState = PlayerState.AIR
             startAimClock = startAimTime
             body.ddy = gravity
@@ -450,6 +475,8 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         } else if (rLedge || lLedge) {
             body.ddy = 0f
             body.dy = 0f
+            body.ddx = 0f
+            body.dx = 0f
             currentState = PlayerState.LEDGE
             facing = if (rLedge) Facing.RIGHT else Facing.LEFT
         } else if (startAimClock <= 0 && JamGame.input.actionJustPressed() && ammo > 0) {
@@ -501,6 +528,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
             Arrow(room, body.centerX(), body.centerY(), dir, 1f)
             ammo -= 1
             body.dx = prevDx
+            body.dy = jumpSpeed / 1.5f
         }
     }
 

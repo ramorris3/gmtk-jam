@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6a55f47-0e97-4856-b7b2-f1df9ed4b93a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/EnemySpawner.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/effects.png" afterPath="$PROJECT_DIR$/core/assets/img/effects.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/enemies.png" afterPath="$PROJECT_DIR$/core/assets/img/enemies.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/platforms.png" afterPath="$PROJECT_DIR$/core/assets/img/platforms.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/player.png" afterPath="$PROJECT_DIR$/core/assets/img/player.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/effects.atlas" afterPath="$PROJECT_DIR$/core/assets/img/effects.atlas" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/enemies.atlas" afterPath="$PROJECT_DIR$/core/assets/img/enemies.atlas" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/platforms.atlas" afterPath="$PROJECT_DIR$/core/assets/img/platforms.atlas" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/img/player.atlas" afterPath="$PROJECT_DIR$/core/assets/img/player.atlas" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/effects.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/effects.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/engine.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/engine.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/EnemySpawner.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/EnemySpawner.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/entities.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/entities.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/physics.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/physics.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/platforms.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/platforms.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/grumpus/jam/screens.kt" afterPath="$PROJECT_DIR$/core/src/com/grumpus/jam/screens.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmtk-jam.iws" afterPath="$PROJECT_DIR$/gmtk-jam.iws" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -81,8 +67,8 @@
           <file leaf-file-name="entities.kt" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/core/src/com/grumpus/jam/entities.kt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="276">
-                  <caret line="514" column="62" lean-forward="false" selection-start-line="514" selection-start-column="62" selection-end-line="514" selection-end-column="62" />
+                <state relative-caret-position="205">
+                  <caret line="232" column="19" lean-forward="false" selection-start-line="232" selection-start-column="19" selection-end-line="232" selection-end-column="19" />
                   <folding>
                     <element signature="e#25#289#0" expanded="true" />
                   </folding>
@@ -115,8 +101,8 @@
           <file leaf-file-name="EnemySpawner.kt" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/core/src/com/grumpus/jam/EnemySpawner.kt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="437">
-                  <caret line="19" column="78" lean-forward="false" selection-start-line="19" selection-start-column="78" selection-end-line="19" selection-end-column="78" />
+                <state relative-caret-position="483">
+                  <caret line="21" column="51" lean-forward="false" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
                   <folding />
                 </state>
               </provider>
@@ -224,6 +210,8 @@
       <find>arrow</find>
       <find>moveState</find>
       <find>player</find>
+      <find>ammo -=</find>
+      <find>leftLedgeCheck</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -247,9 +235,9 @@
         <option value="$PROJECT_DIR$/core/src/com/grumpus/jam/engine.kt" />
         <option value="$PROJECT_DIR$/core/src/com/grumpus/jam/physics.kt" />
         <option value="$PROJECT_DIR$/core/src/com/grumpus/jam/platforms.kt" />
-        <option value="$PROJECT_DIR$/core/src/com/grumpus/jam/EnemySpawner.kt" />
         <option value="$PROJECT_DIR$/core/src/com/grumpus/jam/screens.kt" />
         <option value="$PROJECT_DIR$/core/src/com/grumpus/jam/effects.kt" />
+        <option value="$PROJECT_DIR$/core/src/com/grumpus/jam/EnemySpawner.kt" />
         <option value="$PROJECT_DIR$/core/src/com/grumpus/jam/entities.kt" />
       </list>
     </option>
@@ -863,7 +851,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53806000" />
+    <option name="totallyTimeSpent" value="61017000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-12" y="-12" width="2584" height="1394" extended-state="6" />
@@ -1415,14 +1403,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/grumpus/jam/EnemySpawner.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="19" column="78" lean-forward="false" selection-start-line="19" selection-start-column="78" selection-end-line="19" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/grumpus/jam/effects.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
@@ -1431,10 +1411,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/grumpus/jam/EnemySpawner.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="21" column="51" lean-forward="false" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/grumpus/jam/entities.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="514" column="62" lean-forward="false" selection-start-line="514" selection-start-column="62" selection-end-line="514" selection-end-column="62" />
+        <state relative-caret-position="205">
+          <caret line="232" column="19" lean-forward="false" selection-start-line="232" selection-start-column="19" selection-end-line="232" selection-end-column="19" />
           <folding>
             <element signature="e#25#289#0" expanded="true" />
           </folding>
