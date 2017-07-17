@@ -1,15 +1,17 @@
 package com.grumpus.jam
 
+import com.badlogic.ashley.core.Entity
+
 enum class Facing(val dir: Float) {
     LEFT(-1f),
     RIGHT(1f)
 }
 
 enum class Type {
-    PLAYER, ENEMY, SOLID, SEMISOLID
+    PLAYER, ENEMY, SOLID, ARROW
 }
 
-class Body(var x: Float, var y: Float, val width: Int, val height: Int) {
+class Body(var x: Float, var y: Float, val width: Int, val height: Int, val entity: Entity? = null) {
     var prevX = x
     var prevY = y
     var solid = false
@@ -21,6 +23,9 @@ class Body(var x: Float, var y: Float, val width: Int, val height: Int) {
     var ddy = 0f
     var fx = 0f
     var fy = 0f
+    init {
+        reset()
+    }
 
     fun overlaps(other: Body) : Boolean {
         if (equals(other)) return false
@@ -41,6 +46,17 @@ class Body(var x: Float, var y: Float, val width: Int, val height: Int) {
     fun outOfBounds() : Boolean {
         return (x < 0 || x > JamGame.width
             || y < 0 || y > JamGame.width)
+    }
+
+    fun reset() {
+        dx = 0f
+        dy = 0f
+        dxMax = 0f
+        dyMax = 0f
+        ddx = 0f
+        ddy = 0f
+        fx = 0f
+        fy = 0f
     }
 }
 

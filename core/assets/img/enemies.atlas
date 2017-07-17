@@ -10,105 +10,105 @@ enemy-die
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 5
+  index: 3
 enemy-die
   rotate: false
   xy: 132, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 6
+  index: 0
 enemy-die
   rotate: false
   xy: 262, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 7
+  index: 6
 enemy-die
   rotate: false
   xy: 392, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 8
+  index: 5
 enemy-die
   rotate: false
   xy: 522, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 9
+  index: 8
 enemy-die
   rotate: false
   xy: 652, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 3
+  index: 9
 enemy-die
   rotate: false
   xy: 782, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 2
+  index: 1
 enemy-die
   rotate: false
   xy: 912, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 1
+  index: 7
 enemy-die
   rotate: false
   xy: 1042, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 10
+  index: 4
 enemy-die
   rotate: false
   xy: 1172, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 11
+  index: 2
 enemy-die
   rotate: false
   xy: 1302, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 12
+  index: 10
 enemy-die
   rotate: false
   xy: 1432, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 13
+  index: 11
 enemy-die
   rotate: false
   xy: 1562, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 14
+  index: 12
 enemy-die
   rotate: false
   xy: 1692, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 4
+  index: 13
 enemy-die
   rotate: false
   xy: 1822, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 0
+  index: 14
 skull-idle
   rotate: false
   xy: 2, 2

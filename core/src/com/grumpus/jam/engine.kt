@@ -71,7 +71,6 @@ class PhysicsSystem : IteratingSystem(Family.all(PhysicsComponent::class.java).g
     private fun move(body: Body, delta: Float) {
         body.x += body.dx * delta
         body.y += body.dy * delta
-        println("moving!")
     }
 
     private fun moveToSolid(body: Body, room: Room, delta: Float) {
@@ -151,11 +150,21 @@ class DrawSystem: SortedIteratingSystem(Family.all(DrawComponent::class.java).ge
     }
 }
 
-class DestroySystem: IteratingSystem(Family.all(DestroyComponent::class.java).get()) {
+class DestroySystem(val room: Room) : IteratingSystem(Family.all(DestroyComponent::class.java).get()) {
     override fun processEntity(entity: Entity?, deltaTime: Float) {
         if (entity != null) {
             engine.removeEntity(entity)
-            println("Removed from engine")
+
+            // TODO: This is effing ugly and hacky, but I'm gonna do it to finish on time
+            if (entity is Player) {
+                room.removeFromAnyGroup(entity.body)
+            }
+            if (entity is Arrow) {
+                room.removeFromAnyGroup(entity.body)
+            }
+            if (entity is Enemy) {
+                room.removeFromAnyGroup(entity.body)
+            }
         }
     }
 }
