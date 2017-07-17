@@ -5,20 +5,25 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 
-class Solid(val room: Room, val type: Type, val animKey: String,
+open class Platform(val room: Room, val type: Type = Type.SOLID, animKey: String,
             var time: Float, x: Float, y: Float, width: Int, height: Int) :
         Entity(),
         IUpdatable,
         IDrawable {
 
     val body = Body(x, y, width, height)
+    val spawnAnim: Animation<TextureRegion>
     val anim: Animation<TextureRegion>
+    var currentAnim: Animation<TextureRegion>
     var stateTime = 0f
 
     init {
         // set up anim
-        val atlas = JamGame.assets["img/platforms.atlas", TextureAtlas::class.java]
+        var atlas = JamGame.assets["img/platforms.atlas", TextureAtlas::class.java]
         anim = Animation(0.1f, atlas.findRegions(animKey), Animation.PlayMode.LOOP)
+        atlas = JamGame.assets["img/enemies.atlas", TextureAtlas::class.java]
+        spawnAnim = Animation(0.03f, atlas.findRegions("enemy-die"))
+        currentAnim = spawnAnim
 
         // clamp to integer position
         body.x = Math.round(body.x).toFloat()
@@ -42,13 +47,14 @@ class Solid(val room: Room, val type: Type, val animKey: String,
 
     override fun draw(delta: Float) {
         stateTime += delta
+        currentAnim = if (spawnAnim.isAnimationFinished(stateTime)) anim else spawnAnim
 
         // get key frame
-        val tr = anim.getKeyFrame(stateTime)
+        val tr = currentAnim.getKeyFrame(stateTime)
 
         // center animation over body
         val x = body.centerX() - tr.regionWidth / 2
-        val y = body.centerX() - tr.regionHeight / 2
+        val y = body.centerY() - tr.regionHeight / 2
 
         JamGame.batch.draw(tr, x, y)
     }
@@ -60,5 +66,12 @@ class Solid(val room: Room, val type: Type, val animKey: String,
 
         // TODO: add a sound effect here
         Effect(body.centerX(), body.centerY(), "platform-die")
+    }
+}
+
+class StartPlatform(room: Room, x: Float, y: Float)
+    : Platform(room, Type.SOLID, "platform-block", 0f, x, y, 64, 64) {
+    override fun update(delta: Float) {
+        // don't ever die
     }
 }

@@ -10,7 +10,7 @@ class Effect(var x: Float, var y: Float, animKey: String) : Entity(), IDrawable 
     var stateTime = 0f
     init {
         val atlas = JamGame.assets["img/effects.atlas", TextureAtlas::class.java]
-        anim = Animation(0.06f, atlas.findRegions(animKey), Animation.PlayMode.NORMAL)
+        anim = Animation(0.04f, atlas.findRegions(animKey), Animation.PlayMode.NORMAL)
         add(DrawComponent(this, Layers.EFFECTS))
         JamGame.engine.addEntity(this)
     }

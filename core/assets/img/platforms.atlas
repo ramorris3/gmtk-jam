@@ -6,22 +6,50 @@ filter: Nearest,Nearest
 repeat: none
 platform-block
   rotate: false
-  xy: 2, 2
+  xy: 2, 52
   size: 74, 74
   orig: 74, 74
   offset: 0, 0
   index: 0
 platform-block
   rotate: false
-  xy: 78, 2
+  xy: 78, 52
   size: 74, 74
   orig: 74, 74
   offset: 0, 0
   index: 1
 platform-block
   rotate: false
-  xy: 154, 2
+  xy: 154, 52
   size: 74, 74
   orig: 74, 74
   offset: 0, 0
   index: 2
+platform-start
+  rotate: false
+  xy: 2, 2
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: 0
+platform-start
+  rotate: false
+  xy: 52, 2
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: 1
+platform-start
+  rotate: false
+  xy: 102, 2
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: 2
+platform-start
+  rotate: false
+  xy: 152, 2
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: 3
