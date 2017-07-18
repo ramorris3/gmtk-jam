@@ -329,6 +329,10 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
             aimClock = aimTime
             currentState = PlayerState.GROUND
         } else if (aimClock <= 0 || JamGame.input.actionReleased()) {
+            if (aimClock <= 0) {
+                // TODO: play sound effect?
+                Effect(body.centerX(), body.centerY(), "ui-arrow-pop")
+            }
             currentState = PlayerState.AIR
             body.ddy = gravity
             Arrow(room, body.centerX(), body.centerY(), aimDir, 1f)
