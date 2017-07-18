@@ -239,6 +239,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
 
     val sensor = Body(x, y, 4, 4)
     val sensorText = Texture("img/sensor.png")
+    val ammoAnim = Texture("img/raw/arrow-up_0.png")
 
     init {
         // physics constants
@@ -570,6 +571,12 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
 
     override fun draw(delta: Float) {
         drawCurrentFrame(delta)
+
+        for (i in 1..ammo) {
+            var x = 50.0 + 5.0 * i
+            var y = 500.0
+            JamGame.batch.draw(ammoAnim, x.toFloat(), y.toFloat())
+        }
         // DEBUG
 //        JamGame.batch.draw(sensorText, sensor.x, sensor.y)
     }
