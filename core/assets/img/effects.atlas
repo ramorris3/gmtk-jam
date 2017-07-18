@@ -6,295 +6,344 @@ filter: Nearest,Nearest
 repeat: none
 enemy-die
   rotate: false
-  xy: 132, 132
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 0
-enemy-die
-  rotate: false
-  xy: 262, 262
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-enemy-die
-  rotate: false
-  xy: 132, 2
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 2
-enemy-die
-  rotate: false
-  xy: 262, 132
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 3
-enemy-die
-  rotate: false
-  xy: 392, 262
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 4
-enemy-die
-  rotate: false
-  xy: 262, 2
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 5
-enemy-die
-  rotate: false
-  xy: 392, 132
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 6
-enemy-die
-  rotate: false
-  xy: 522, 262
+  xy: 2, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 7
 enemy-die
   rotate: false
-  xy: 392, 2
+  xy: 132, 328
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 0
+enemy-die
+  rotate: false
+  xy: 2, 68
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+enemy-die
+  rotate: false
+  xy: 262, 328
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 3
+enemy-die
+  rotate: false
+  xy: 132, 68
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 4
+enemy-die
+  rotate: false
+  xy: 262, 198
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 5
+enemy-die
+  rotate: false
+  xy: 392, 328
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 6
+enemy-die
+  rotate: false
+  xy: 262, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 8
 enemy-die
   rotate: false
-  xy: 522, 132
+  xy: 392, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 9
 enemy-die
   rotate: false
-  xy: 1432, 2
+  xy: 522, 328
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 2
+enemy-die
+  rotate: false
+  xy: 1562, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 10
 enemy-die
   rotate: false
-  xy: 1562, 132
+  xy: 1692, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 11
 enemy-die
   rotate: false
-  xy: 1692, 262
+  xy: 1562, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 12
 enemy-die
   rotate: false
-  xy: 1562, 2
+  xy: 1692, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 13
 enemy-die
   rotate: false
-  xy: 1692, 132
+  xy: 1822, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 14
 platform-die
   rotate: false
-  xy: 782, 2
+  xy: 782, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 10
 platform-die
   rotate: false
-  xy: 912, 2
+  xy: 1042, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 0
 platform-die
   rotate: false
-  xy: 1042, 132
+  xy: 1172, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
 platform-die
   rotate: false
-  xy: 1172, 262
+  xy: 1042, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 2
 platform-die
   rotate: false
-  xy: 1042, 2
+  xy: 1172, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 3
 platform-die
   rotate: false
-  xy: 1172, 132
+  xy: 1302, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 4
 platform-die
   rotate: false
-  xy: 1302, 262
+  xy: 1172, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 5
 platform-die
   rotate: false
-  xy: 1172, 2
+  xy: 1302, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 6
 platform-die
   rotate: false
-  xy: 1302, 132
+  xy: 1432, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 7
 platform-die
   rotate: false
-  xy: 1432, 262
+  xy: 1302, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 8
 platform-die
   rotate: false
-  xy: 1302, 2
+  xy: 1432, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 9
 platform-die
   rotate: false
-  xy: 1432, 132
+  xy: 1562, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 11
 platform-die
   rotate: false
-  xy: 1562, 262
+  xy: 1432, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 12
 player-die
   rotate: false
-  xy: 2, 262
+  xy: 2, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 10
 player-die
   rotate: false
-  xy: 2, 132
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 7
-player-die
-  rotate: false
-  xy: 132, 262
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 4
-player-die
-  rotate: false
-  xy: 2, 2
+  xy: 132, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 11
 player-die
   rotate: false
-  xy: 652, 262
+  xy: 392, 68
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 4
+player-die
+  rotate: false
+  xy: 522, 198
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 9
+player-die
+  rotate: false
+  xy: 652, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 0
 player-die
   rotate: false
-  xy: 522, 2
+  xy: 522, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
 player-die
   rotate: false
-  xy: 652, 132
+  xy: 652, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 2
 player-die
   rotate: false
-  xy: 782, 262
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 3
-player-die
-  rotate: false
-  xy: 652, 2
+  xy: 782, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 12
 player-die
   rotate: false
-  xy: 782, 132
+  xy: 652, 68
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 5
+player-die
+  rotate: false
+  xy: 782, 198
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 6
+player-die
+  rotate: false
+  xy: 912, 328
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 7
+player-die
+  rotate: false
+  xy: 912, 198
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 8
+player-die
+  rotate: false
+  xy: 1042, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 13
 player-die
   rotate: false
-  xy: 912, 262
+  xy: 912, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 6
-player-die
+  index: 3
+ui-arrow-pop
   rotate: false
-  xy: 912, 132
-  size: 128, 128
-  orig: 128, 128
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
-  index: 8
-player-die
+  index: 2
+ui-arrow-pop
   rotate: false
-  xy: 1042, 262
-  size: 128, 128
-  orig: 128, 128
+  xy: 1692, 132
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
-  index: 9
-player-die
+  index: 1
+ui-arrow-pop
   rotate: false
   xy: 1822, 262
-  size: 128, 128
-  orig: 128, 128
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+ui-arrow-pop
+  rotate: false
+  xy: 1952, 392
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+ui-arrow-pop
+  rotate: false
+  xy: 68, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+ui-arrow-pop
+  rotate: false
+  xy: 134, 2
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: 5
+ui-arrow-pop
+  rotate: false
+  xy: 200, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
