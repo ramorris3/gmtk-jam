@@ -183,7 +183,7 @@ limitMemory=true
 useIndexes=true
 
 scaleFactors=[{suffix:"",factor:1}]
-inputFiles=[{path:raw/ui-arrow_0.png,type:Input,regionName:null},{path:raw/ui-arrow_2.png,type:Input,regionName:null},{path:raw/ui-arrow_1.png,type:Input,regionName:null}]
+inputFiles=[{path:raw/ui-arrow_0.png,type:Input,regionName:null},{path:raw/ui-arrow_2.png,type:Input,regionName:null},{path:raw/ui-arrow_1.png,type:Input,regionName:null},{path:raw/aim-timer_0.png,type:Input,regionName:null}]
 
 
 -PROJ-
