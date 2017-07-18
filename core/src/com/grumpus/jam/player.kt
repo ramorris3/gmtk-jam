@@ -371,5 +371,11 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
 
     override fun draw(delta: Float) {
         drawCurrentFrame(delta)
+
+        val width = aimClock * 20
+        val height = 7.5
+        if (currentState == PlayerState.AIM){
+            JamGame.batch.draw(sensorText, body.x, body.y + 100, width, height.toFloat())
+        }
     }
 }
