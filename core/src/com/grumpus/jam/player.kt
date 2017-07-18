@@ -1,203 +1,9 @@
 package com.grumpus.jam
 
-import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.Vector2
-
-abstract class AnimatedEntity(x: Float, y: Float, width: Int, height: Int) : Entity() {
-    var body = Body(x, y, width, height)
-    private var currentAnim: Animation<TextureRegion>? = null
-    private var stateTime = 0f
-    var facing = Facing.RIGHT
-    var rotation = 0f
-
-    fun faceLeft() {
-        facing = Facing.LEFT
-    }
-
-    fun faceRight() {
-        facing = Facing.RIGHT
-    }
-
-    fun setAnim(anim: Animation<TextureRegion>) {
-        if (currentAnim == null || anim != currentAnim) {
-            stateTime = 0f
-            currentAnim = anim
-        }
-    }
-
-    fun getCurrentFrame(delta: Float) : TextureRegion? {
-        stateTime += delta
-        return currentAnim?.getKeyFrame(stateTime)
-    }
-
-    fun drawCurrentFrame(delta: Float) {
-        val tr = getCurrentFrame(delta)
-        if (tr != null) {
-            // center current frame horizontally over body hitbox
-            var x = body.centerX() - tr.regionWidth / 2
-            var y = body.centerY() - tr.regionHeight / 2
-
-            // take into account "facing" offset
-            if (facing == Facing.LEFT) {
-                x += tr.regionWidth
-            }
-
-            // draw the frame
-            JamGame.batch.draw(tr, x, y, 0f, 0f, tr.regionWidth.toFloat(),
-                    tr.regionHeight.toFloat(), facing.dir, 1f, rotation) // TODO: Rotation??
-        }
-    }
-
-    fun isAnimFinished() : Boolean {
-        return currentAnim?.isAnimationFinished(stateTime) ?: false
-    }
-}
-
-abstract class Enemy(val room: Room, val player: Player, x: Float, y: Float, width: Int, height: Int,
-                     idleAnimName: String, dieAnimName: String)
-    : AnimatedEntity(x, y, width, height), IUpdatable, IDrawable {
-
-    val idleAnim: Animation<TextureRegion>
-
-    init {
-        val atlas = JamGame.assets["img/enemies.atlas", TextureAtlas::class.java]
-        idleAnim = Animation(0.07f, atlas.findRegions(idleAnimName), Animation.PlayMode.LOOP)
-        setAnim(idleAnim)
-
-        body.dxMax = 50f
-        body.dyMax = 50f
-
-        add(UpdateComponent(this))
-        add(PhysicsComponent(room, body))
-        add(DrawComponent(this))
-        JamGame.engine.addEntity(this)
-
-        room.addToGroup(body, Type.ENEMY)
-    }
-
-    abstract fun spawnPlatform()
-
-    fun die() {
-        spawnPlatform()
-        add(DestroyComponent())
-    }
-
-    abstract fun move(delta: Float)
-
-    override fun update(delta: Float) {
-        val arrowBody = room.getOverlapping(body, Type.ARROW)
-        if (arrowBody != null) {
-            die()
-            if (arrowBody.entity is Arrow) {
-                arrowBody.entity.die()
-            }
-        } else {
-            move(delta)
-        }
-    }
-
-    override fun draw(delta: Float) {
-        drawCurrentFrame(delta)
-    }
-}
-
-// class Skull
-class Skull(room: Room, player: Player, x: Float, y: Float):
-    Enemy(room, player, x, y, 64, 64, "skull-idle", "skull-idle") {
-
-    val accel = 100f
-
-    override fun move(delta: Float) {
-        // chase player directly
-        body.ddx = if (player.body.x < body.x) -accel else accel
-        body.ddy = if (player.body.y < body.y) -accel else accel
-    }
-
-    override fun spawnPlatform() {
-        Platform(room, Type.SOLID, "platform-block", 5f, body.x, body.y, 64, 64)
-    }
-}
-
-enum class ArrowDir(val v: Vector2) {
-    UP(Vector2(0f, 1f)),
-    DOWN(Vector2(0f, -1f)),
-    LEFT(Vector2(-1f, 0f)),
-    RIGHT(Vector2(1f, 0f))
-}
-
-class Arrow(val room: Room, x: Float, y: Float, val dir: ArrowDir, val charge: Float) :
-    AnimatedEntity(x, y, if (dir == ArrowDir.UP || dir == ArrowDir.DOWN) 6 else 48,
-            if (dir == ArrowDir.UP || dir == ArrowDir.DOWN) 48 else 6),
-    IUpdatable, IDrawable {
-
-    val flyAnim: Animation<TextureRegion>
-    val popAnim: Animation<TextureRegion>
-
-    var dead = false
-
-    init {
-        body = Body(x, y, if (dir == ArrowDir.UP || dir == ArrowDir.DOWN) 6 else 48,
-                if (dir == ArrowDir.UP || dir == ArrowDir.DOWN) 48 else 6, this)
-        val atlas = JamGame.assets["img/player.atlas", TextureAtlas::class.java]
-        var dirName: String
-        when(dir) {
-            ArrowDir.UP -> dirName = "-up"
-            ArrowDir.DOWN -> dirName = "-down"
-            ArrowDir.LEFT -> dirName = "-left"
-            ArrowDir.RIGHT -> dirName = "-right"
-        }
-        flyAnim = Animation(0f, atlas.findRegions("arrow$dirName"))
-        popAnim = Animation(0.06f, atlas.findRegions("arrow-pop$dirName"))
-        setAnim(flyAnim)
-
-        body.dxMax = 1700f
-        body.dyMax = 1500f
-        body.dx = dir.v.x * charge * body.dxMax
-        body.dy = dir.v.y * charge * body.dyMax
-        body.ddy = -400f
-
-        room.addToGroup(body, Type.ARROW)
-
-        add(UpdateComponent(this))
-        add(DrawComponent(this))
-        add(PhysicsComponent(room, body))
-        JamGame.engine.addEntity(this)
-    }
-
-    fun die() {
-        room.removeFromAnyGroup(body)
-        dead = true
-        setAnim(popAnim)
-        body.dx = 0f
-        body.dy = 0f
-        body.ddx = 0f
-        body.ddy = 0f
-    }
-
-    override fun update(delta: Float) {
-        // handle enemy collisions in enemy class
-
-        if (!dead) {
-            // check for out of bounds, or collision with enemy or platform
-            if (body.outOfBounds()) {
-                add(DestroyComponent())
-            } else if (room.overlaps(body, Type.SOLID)) {
-                die()
-            }
-        }
-    }
-
-    override fun draw(delta: Float) {
-        drawCurrentFrame(delta)
-        if (dead && isAnimFinished()) {
-            add(DestroyComponent())
-        }
-    }
-}
 
 enum class PlayerState {
     GROUND, AIR, AIM, LEDGE
@@ -238,8 +44,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
     var currentState = PlayerState.AIR
 
     val sensor = Body(x, y, 4, 4)
-    val sensorText = Texture("img/sensor.png")
-    val ammoAnim = Texture("img/raw/arrow-up_0.png")
+    val quiver = Quiver(this)
 
     init {
         // physics constants
@@ -298,8 +103,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
     private fun rightLedgeCheck() : Boolean {
         // check if against wall
         if (!onRightWall()
-            || body.dy >= 0f) {
-//            || !JamGame.input.rightPressed()) {
+                || body.dy >= 0f) {
             return false
         }
 
@@ -334,8 +138,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
 
     private fun leftLedgeCheck() : Boolean {
         if (!onLeftWall()
-            || body.dy >= 0f) {
-//            || !JamGame.input.leftPressed()) {
+                || body.dy >= 0f) {
             return false
         }
 
@@ -371,7 +174,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         body.fx = groundFx
 
         // reload
-        ammo = maxAmmo
+        quiver.reload()
 
         // run
         if (JamGame.input.leftPressed()) {
@@ -417,7 +220,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
 
     private fun ledgeState() {
         // reload
-        ammo = maxAmmo
+        quiver.reload()
 
         // just hanging, no special logic other than anim
         setAnim(ledgeAnim)
@@ -527,7 +330,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
             currentState = PlayerState.AIR
             body.ddy = gravity
             Arrow(room, body.centerX(), body.centerY(), dir, 1f)
-            ammo -= 1
+            quiver.pop()
             body.dx = prevDx
             body.dy = jumpSpeed / 1.5f
         }
@@ -563,21 +366,10 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
             PlayerState.AIR -> jumpState()
             PlayerState.LEDGE -> ledgeState()
             PlayerState.AIM -> aimState(delta)
-            else -> {
-                println("State was not recognized.")
-            }
         }
     }
 
     override fun draw(delta: Float) {
         drawCurrentFrame(delta)
-
-        for (i in 1..ammo) {
-            var x = 50.0 + 5.0 * i
-            var y = 500.0
-            JamGame.batch.draw(ammoAnim, x.toFloat(), y.toFloat())
-        }
-        // DEBUG
-//        JamGame.batch.draw(sensorText, sensor.x, sensor.y)
     }
 }
