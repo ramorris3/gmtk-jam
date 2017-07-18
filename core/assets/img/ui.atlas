@@ -1,9 +1,16 @@
 
 ui.png
-size: 256,128
+size: 256,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+aim-timer
+  rotate: false
+  xy: 2, 68
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 0
 ui-arrow
   rotate: false
   xy: 2, 2
@@ -13,14 +20,14 @@ ui-arrow
   index: 0
 ui-arrow
   rotate: false
-  xy: 68, 2
+  xy: 132, 132
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 ui-arrow
   rotate: false
-  xy: 134, 2
+  xy: 68, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

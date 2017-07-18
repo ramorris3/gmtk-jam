@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 
 enum class PlayerState {
-    GROUND, AIR, AIM, LEDGE
+    GROUND, AIR, AIM, LEDGE, DEAD
 }
 
 class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54), IUpdatable, IDrawable {
@@ -28,8 +28,9 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
     val groundFx = 1800f * const
     val airFx = 900f * const
     val jumpSpeed = 390f * const
-    val gravity = -625f * const
+    val sensor = Body(x, y, 4, 4)
 
+    val gravity = -625f * const
     val groundTime = 0.1f
     var groundClock = groundTime
     val shortJumpTime = 0.1f
@@ -38,13 +39,15 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
     var startAimClock = startAimTime
     val aimTime = 1f
     var aimClock = aimTime
+
+    lateinit var aimDir: ArrowDir
     val maxAmmo = 5
     var ammo = maxAmmo
 
-    var currentState = PlayerState.AIR
-
-    val sensor = Body(x, y, 4, 4)
     val quiver = Quiver(this)
+    val aimTimer = AimTimer(this)
+
+    var currentState = PlayerState.AIR
 
     init {
         // physics constants
@@ -294,24 +297,23 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
 
     private fun aimState(delta: Float) {
         // aim left, right, up, or down
-        var dir: ArrowDir
         if (JamGame.input.upPressed()) {
             setAnim(aimUpAnim)
-            dir = ArrowDir.UP
+            aimDir = ArrowDir.UP
         } else if (JamGame.input.downPressed()) {
             setAnim(aimDownAnim)
-            dir = ArrowDir.DOWN
+            aimDir = ArrowDir.DOWN
         } else if (JamGame.input.leftPressed()) {
             setAnim(aimSideAnim)
             faceLeft()
-            dir = ArrowDir.LEFT
+            aimDir = ArrowDir.LEFT
         } else if (JamGame.input.rightPressed()) {
             setAnim(aimSideAnim)
             faceRight()
-            dir = ArrowDir.RIGHT
+            aimDir = ArrowDir.RIGHT
         } else {
             setAnim(aimSideAnim)
-            dir = if (facing == Facing.LEFT) ArrowDir.LEFT else ArrowDir.RIGHT
+            aimDir = if (facing == Facing.LEFT) ArrowDir.LEFT else ArrowDir.RIGHT
         }
 
         // slow falling, stop moving horizontally
@@ -329,7 +331,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
         } else if (aimClock <= 0 || JamGame.input.actionReleased()) {
             currentState = PlayerState.AIR
             body.ddy = gravity
-            Arrow(room, body.centerX(), body.centerY(), dir, 1f)
+            Arrow(room, body.centerX(), body.centerY(), aimDir, 1f)
             quiver.pop()
             body.dx = prevDx
             body.dy = jumpSpeed / 1.5f
@@ -338,6 +340,7 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
 
     private fun die() {
         add(DestroyComponent())
+        currentState = PlayerState.DEAD
         Effect(body.centerX(), body.centerY(), "player-die")
     }
 
@@ -371,11 +374,5 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
 
     override fun draw(delta: Float) {
         drawCurrentFrame(delta)
-
-        val width = aimClock * 20
-        val height = 7.5
-        if (currentState == PlayerState.AIM){
-            JamGame.batch.draw(sensorText, body.x, body.y + 100, width, height.toFloat())
-        }
     }
 }
