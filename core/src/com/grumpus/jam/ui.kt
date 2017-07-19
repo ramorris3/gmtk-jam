@@ -70,3 +70,37 @@ class AimTimer(val player: Player) : Entity(), IDrawable {
         }
     }
 }
+
+
+class Counter(val player: Player) : Entity(), IDrawable {
+    var stateTime = 0f
+    val anim : Animation<TextureRegion>
+
+    init {
+        val atlas = JamGame.assets["img/ui.atlas", TextureAtlas::class.java]
+        anim = Animation(0.1f, atlas.findRegions("ui-arrow"), Animation.PlayMode.LOOP)
+
+        add(DrawComponent(this, Layers.UI))
+        JamGame.engine.addEntity(this)
+    }
+
+
+    override fun draw(delta: Float) {
+        stateTime += delta
+        val tr = anim.getKeyFrame(stateTime)
+        var y = JamGame.height - tr.regionHeight / 2f
+        var x = 950f
+
+        val fiveTallies = player.score / 5
+        val oneTallies = player.score % 5
+        for (i in 1..fiveTallies) {
+            JamGame.batch.draw(tr, x, y, tr.regionWidth * 2f, tr.regionHeight / 2f)
+            y -= tr.regionHeight / 2
+        }
+        x = 1020f
+        for (i in 1..oneTallies) {
+            JamGame.batch.draw(tr, x, y, 5f, tr.regionHeight / 2f)
+            x -= 6f
+        }
+    }
+}

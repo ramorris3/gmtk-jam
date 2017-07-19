@@ -31,6 +31,7 @@ abstract class Enemy(val room: Room, val player: Player, x: Float, y: Float, wid
     fun die() {
         spawnPlatform()
         add(DestroyComponent())
+        player.score += 1
     }
 
     abstract fun move(delta: Float)

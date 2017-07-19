@@ -40,12 +40,14 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
     val aimTime = 1f
     var aimClock = aimTime
 
-    lateinit var aimDir: ArrowDir
+    var aimDir = ArrowDir.RIGHT
     val maxAmmo = 5
     var ammo = maxAmmo
+    var score = 0
 
     val quiver = Quiver(this)
     val aimTimer = AimTimer(this)
+    val counter = Counter(this)
 
     var currentState = PlayerState.AIR
 
@@ -311,9 +313,8 @@ class Player(val room: Room, x: Float, y: Float) : AnimatedEntity(x, y, 16, 54),
             setAnim(aimSideAnim)
             faceRight()
             aimDir = ArrowDir.RIGHT
-        } else {
+        } else if (aimDir == ArrowDir.RIGHT) {
             setAnim(aimSideAnim)
-            aimDir = if (facing == Facing.LEFT) ArrowDir.LEFT else ArrowDir.RIGHT
         }
 
         // slow falling, stop moving horizontally
